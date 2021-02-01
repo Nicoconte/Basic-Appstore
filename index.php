@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 $view = "";
 
@@ -13,7 +14,7 @@ else
 
 ?>
 
-<?php include("core/view/header.php"); ?>
+<?php include("core/templates/header.php"); ?>
 <body>
 
     <section id="page">

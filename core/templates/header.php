@@ -22,6 +22,6 @@
     <link rel="stylesheet" href="assets/css/index.css">
 
 
-    <title>Playstore Clone</title>
+    <title>Appstore for fun</title>
 
 </head>
