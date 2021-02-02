@@ -11,7 +11,8 @@ spl_autoload_register(function($classname) {
         $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/model/" . $classname . ".php",
         $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/modules/" . $classname . ".php",
         $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/modules/dao/" . $classname . ".php",
-        $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/modules/helpers/" . $classname . ".php"
+        $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/modules/helpers/" . $classname . ".php",
+        $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/modules/auth/" . $classname . ".php"
     );
 
     foreach($dirs as $dir) 

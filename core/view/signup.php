@@ -1,40 +1,19 @@
-<div class="page-container">
+<div class="page-container d-flex justify-content-center align-items-center">
 
-    <div class="signup-container">
+<div class="w-50 h-75 d-flex justify-content-center flex-column">
 
-        <div class="signup-img-side">
-            <div class="signup-img">
-                <div class="transparency"></div>
-            </div>
-        </div>
-        
-        <div class="signup-form">
+    <p> <?php echo empty($_SESSION['USER']) ? "No hay usuario" : var_dump($_SESSION['USER']); ?></p>
 
-            <div class="signup-form-container">
+    <input type="text" class="mt-3" id="username" placeholder="Usuario">
 
-                <div class="signup-form-sup">
-                    
-                </div>
+    <input type="password" class="mt-3" id="user-password" placeholder="Contraseña">
 
-                <div class="signup-form-mid w-100 h-100 d-flex justify-content-center align-items-center flex-column">
-                    <input type="text" class="mt-3" id="username" placeholder="Usuario">
+    <button id="signup-btn" class="btn btn-success mt-4">Sign up</button>
 
-                    <input type="email" class="mt-2" id="user-email" placeholder="Email">
+    <button id="signin-btn" class="btn btn-info mt-3">Sign in </button>
 
-                    <input type="password" class="mt-2" id="user-password" placeholder="Contraseña">
+    <button id="signout-btn" class="btn btn-secondary mt-3">Sign out </button>
 
-                    <button id="signup-btn" class="btn btn-success mt-4">Sign up for free</button>
-
-                </div>
-
-                <div class="signup-form-inf">
-                
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+</div>
 
 </div>

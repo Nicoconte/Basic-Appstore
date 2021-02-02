@@ -1,26 +1,20 @@
 <?php
 
-
 class Auth
 {
     public function isAuthenticated()
     {
-        if (isset($_SESSION['CURRENT_USER']['ID']))
-        {
-            return false;
-        }
-
-        return true;
+        return $_SESSION['USER'] === null;
     }
 
-    public function isDevs()
+    public function isDeveloper()
     {
-        return $_SESSION['CURRENT_USER']['ROLE'] === "developer";
+        return $_SESSION['USER']['ROLE'] === "developer";
     }
     
     public function isCustomer()
     {
-        return $_SESSION['CURRENT_USER']['ROLE'] === "customer";
+        return $_SESSION['USER']['ROLE'] === "customer";
     }    
 }
 

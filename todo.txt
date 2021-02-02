@@ -1,0 +1,22 @@
+**************************************************************************************************
+
+Cosas hechas:
+- 02/02/2021
+Registro e inicio de sesion implementados.
+Se arreglo las peticiones al servidor via $.post
+Se agrego una validacion de campos
+Se agrego un metodo para colocar iconos de FontAwesome
+Se agrego metodo para mostrar mensajes por pantalla con SweetAlert2
+
+
+**************************************************************************************************
+
+Cosas por hacer:
+    - Diseñar dashboard
+    - Diseñar sign in y sign up
+    - Colocar animaciones en las paginas anteriores
+    - Diferenciar registro segun el usuario a registrar ("Customer" o "Developer")
+    - Ver de pasar las views a los assets (Opcional)
+
+
+**************************************************************************************************

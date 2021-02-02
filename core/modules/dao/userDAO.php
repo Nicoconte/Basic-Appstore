@@ -56,7 +56,12 @@ class UserDAO
     }
 
 
-    public function get(string $id) 
+    /**
+     * @Find user by id
+     * @param String user $id
+     * @return null or User user object
+    */
+    public function findByID(string $id)  
     {
         if ($id !== null)
         {
@@ -92,11 +97,53 @@ class UserDAO
 
 
     /**
-     * 
-     * Verify if the user exist by username and password (Authentication)
-     * 
+     * @Description Check if the user already exist
+     * @param User user ("", username, password, "")
+     * @return null or User user
      */
     public function exist(User $user)
+    {
+        if ($user !== null)
+        {
+
+            $username = $user->getUsername();
+
+            $this->sql = "SELECT id, username, password, role FROM users WHERE username=?";
+
+            $this->stmt = $this->conn->prepare($this->sql);
+            $this->stmt->bind_param("s", $username);
+            $this->stmt->execute();
+
+            $this->result = $this->stmt->get_result();
+
+            if ($this->result->num_rows > 0)
+            {   
+
+                
+                $this->result = null;
+                $this->stmt->free_result();
+                $this->stmt->close();
+
+                return true;
+                
+            }
+
+
+            $this->stmt->close();
+            return false;
+            
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @Description Find user by username and password
+     * @param User user ("", username, password, "")
+     * @return null or User user
+     */
+    public function findByUsernameAndPassword(User $user)
     {
         if ($user !== null)
         {
@@ -133,8 +180,7 @@ class UserDAO
         }
 
         return null;
-    }
-
+    }    
 
     /**
      * @This method only will be available for the admin who watch the movement inside the platform. Extends it to use
@@ -145,7 +191,7 @@ class UserDAO
 
         $users = array();
 
-        $this->sql = "SELECT * FROM users";
+        $this->sql = "SELECT id, username, password, role FROM users";
 
         $this->stmt = $this->conn->prepare($this->sql);
         $this->stmt->execute();

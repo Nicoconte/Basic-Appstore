@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 include $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/autoloader.php";
 
@@ -13,53 +14,57 @@ class UserController
 
     public function signup(User $user) 
     {
-        $saved = null;
 
         if ($user !== null)
-        {
-            $saved = $this->userDAO->save($user);
+        {   
 
-            if ($saved)
+            if ($this->userDAO->exist($user)) return json_encode(array( "success" => false ));
+
+            if ($this->userDAO->save($user))
             {
                 return json_encode(array(
-                    "success" => true
+                    "saved" => true
                 ));
             } 
             else 
             {
                 return json_encode(array(
-                    "success" => false
+                    "saved" => false
                 ));
             }
 
         }
 
         return json_encode(array(
-            "success" => false
+            "saved" => false
         ));
 
     }
 
-    public function signin(User $entryUser) 
+    public function signin(User $user) 
     {
-        if ($entryUser !== null)
+        if ($user !== null)
         {
 
-            $user = $this->userDAO->exist($entryUser);
-            
+            $user = $this->userDAO->findByUsernameAndPassword($user);
 
             if ($user !== null) 
             {
-                $_SESSION['CURRENT_USER'] = array(
+
+                $_SESSION['USER'] = array(
                     "ID" => $user->getId(),
                     "ROLE" => $user->getRole()
                 );
+
+                return json_encode(array(
+                    "auth" => true 
+                ));
             } 
             else 
             {
                 
                 return json_encode(array(
-                    "details" => "Invalid credentials"
+                    "auth" => false
                 ));
 
             }
@@ -67,7 +72,18 @@ class UserController
         }
 
         return json_encode(array(
-            "details" => "Something goes wrong with the authentication"
+            "auth" => false
+        ));
+    }
+
+
+    public function signout()
+    {
+        session_destroy();
+        unset($_SESSION['USER']);
+
+        return json_encode(array(
+            "quit" => empty($_SESSION['USER'])
         ));
     }
 
@@ -75,32 +91,28 @@ class UserController
 
 /** 
  * Fetch POST array and do an action
- * 
+ * TODO: Refactor. Make it more secure avoiding the calling from another php file
 */
 
 $utils = new Utils();
 
-if(!$utils->isValid($_POST['body'])) 
-    echo json_encode(array(
-        "success" => false,
-        "details" => "Empty fields"
-    ));
-
-    return;
+if(!$utils->isValid($_POST['body'])) { 
+    echo die(json_encode(array ("success" => false, "details" => "Empty fields")) );
+}
 
 $userController = new UserController();
-
+$response = null;
 
 switch($_POST['body']['action'])
 {
     case "signup":
+
         $id = $utils->generateUUID();
         $username = $_POST['body']['username'];
         $password = $_POST['body']['password'];
         $role = $_POST['body']['role'];
 
         $response = $userController->signup(new User($id, $username, $password, $role));
-        echo $response;
         
         break;
 
@@ -110,14 +122,20 @@ switch($_POST['body']['action'])
         $password = $_POST['body']['password'];
         
         $response = $userController->signin(new User("", $username, $password, ""));
-        echo $response;
-
+       
         break;
     
+    case "signout":
+
+        $response = $userController->signout();
+
+        break;
+
     default:
         break;
 }
 
+echo $response;
 
 
 ?>
