@@ -9,7 +9,7 @@ if (isset($_GET['page']))
 } 
 else 
 {
-    $view = "home";
+    $view = "test";
 }
 
 ?>

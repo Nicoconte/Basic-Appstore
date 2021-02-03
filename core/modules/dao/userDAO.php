@@ -3,24 +3,12 @@
 include $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/autoloader.php";
 
 
-class UserDAO
+class UserDAO extends DAO
 {
-    
-    private $database;
-    private $conn;
-    private $stmt;
-
-    private $result;
-    private $row;
-    private $sql;
-
-    private $utils;
-
     public function __construct()
     {
         $this->database = new Database();
         $this->conn = $this->database->getConnection();
-        $this->utils = new Utils();    
     }
 
     public function save(User $user) : bool

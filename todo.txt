@@ -8,6 +8,13 @@ Se agrego una validacion de campos
 Se agrego un metodo para colocar iconos de FontAwesome
 Se agrego metodo para mostrar mensajes por pantalla con SweetAlert2
 
+- 03/02/2021
+Diferenciar registro segun el usuario a registrar ("Customer" o "Developer")
+Se agrego el modelo de aplicaciones moviles
+Se creo el DAO de aplicaciones moviles
+Se llevo los atributos mas frecuentes del DAO a una clase aparte (Padre)
+Se creo el controlador de aplicaciones moviles
+
 
 **************************************************************************************************
 
@@ -15,8 +22,8 @@ Cosas por hacer:
     - Diseñar dashboard
     - Diseñar sign in y sign up
     - Colocar animaciones en las paginas anteriores
-    - Diferenciar registro segun el usuario a registrar ("Customer" o "Developer")
-    - Ver de pasar las views a los assets (Opcional)
-
+    - Probar las implementaciones del 03/02/2021
+    - Terminar el crud de aplicaciones moviles
+    - Comenzar a modelar la tienda 
 
 **************************************************************************************************

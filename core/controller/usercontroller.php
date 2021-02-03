@@ -57,14 +57,16 @@ class UserController
                 );
 
                 return json_encode(array(
-                    "auth" => true 
+                    "auth" => true,
+                    "details" => "Bienvenido" 
                 ));
             } 
             else 
             {
                 
                 return json_encode(array(
-                    "auth" => false
+                    "auth" => false,
+                    "details" => "Credenciales invalidas"
                 ));
 
             }
@@ -72,7 +74,8 @@ class UserController
         }
 
         return json_encode(array(
-            "auth" => false
+            "auth" => false,
+            "details" => "Algo salio mal"
         ));
     }
 
@@ -96,9 +99,12 @@ class UserController
 
 $utils = new Utils();
 
-if(!$utils->isValid($_POST['body'])) { 
+if(!$utils->isValid($_POST['body'])) 
+{ 
     echo die(json_encode(array ("success" => false, "details" => "Empty fields")) );
 }
+
+$auth = new Auth();
 
 $userController = new UserController();
 $response = null;
@@ -120,6 +126,16 @@ switch($_POST['body']['action'])
 
         $username = $_POST['body']['username'];
         $password = $_POST['body']['password'];
+
+        if ($auth->isAuthenticated())
+        {
+            echo json_encode(array(
+                "auth" => false,
+                "details" => "El usuario esta autenticado"
+            ));
+
+            break;
+        }
         
         $response = $userController->signin(new User("", $username, $password, ""));
        

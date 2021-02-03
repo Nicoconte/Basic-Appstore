@@ -1,5 +1,5 @@
 
-const messages = {
+const message = {
     show : (message, icon, time, text = "", callback = null) => {
         Swal.fire({
             icon : icon,
@@ -25,6 +25,15 @@ const fontAwesomeIcon = (icon, options = "") => {
 
 
 /**
+ * 
+ * @param {Array} inputs 
+ */
+const clearInput = (inputs) => {
+    return inputs.forEach(input => $(input).val(""));
+}
+
+
+/**
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
  * @param {Array} inputs 
  */
@@ -32,43 +41,42 @@ const areInputEmpty = (inputs) => {
     return inputs.some(input => $(input).val().length <= 0 )
 }
 
-
-
 const signup = () => {
 
     $("#signup-btn").click(function(e) {
 
         e.preventDefault();
 
-        if (areInputEmpty(["#username", "#user-password"])) {
-            messages.show("Debe completar los campos", "warning", 2000, "");
+        if (areInputEmpty(["#username", "#user-password", "#user-role"])) {
+            message.show("Debe completar los campos", "warning", 2000, "");
 
             return;
         } 
 
         let username = $("#username").val();
         let password = $("#user-password").val();
+        let role     = $("#user-role").val();
 
         let body = 
         {
             "body": {
                 "username" : username, 
                 "password" : password,
-                "role" : "developer",
+                "role" : role,
                 "action" : "signup"
             }
         }
 
         $.post("core/controller/usercontroller.php", body, (response) => {
 
-            if (response.saved === true) {
-                messages.show("El registro fue exitoso!", "success", 1500, () => {
+            if (response.saved) {
+                message.show("El registro fue exitoso!", "success", 1500, () => {
                     //Redirect to dashboard
                 })
 
             } else {
-                messages.show("El usuario ya existe " + fontAwesomeIcon("fa fa-frown-o", "ml-2 mt-1"), "warning", 1500, "Intente con otro :)", () => {
-                    //Clear form
+                message.show("El usuario ya existe " + fontAwesomeIcon("fa fa-frown-o", "ml-2 mt-1"), "warning", 1500, "Intente con otro :)", () => {
+                    clearInput(["#username", "#user-password"]);
                 })
             
             }
@@ -85,7 +93,7 @@ const signin = () => {
         e.preventDefault();
 
         if (areInputEmpty(["#username", "#user-password"])) {
-            messages.show("Debe completar los campos", "warning", 2000, "");
+            message.show("Debe completar los campos", "warning", 2000, "");
 
             return;
         } 
@@ -104,15 +112,15 @@ const signin = () => {
 
         $.post("core/controller/usercontroller.php", body, (response) => {
 
-            if (response.auth === true)
-                messages.show("Bienvenido!", "success", 1300, "", () => {
+            if (response.auth)
+                message.show(response.details, "success", 1300, "", () => {
                     window.location.reload();
                 });
 
             else
-                console.log("Credenciales invalidas")
+                message.show(response.details + " " + fontAwesomeIcon("fa fa-times", "ml-2 mt-1 text-danger"), "error", 1300, "Revise los datos ingresados!");
 
-        }, "json") // "json" equals to dataType : "JSON"
+        }, "json")
 
     })
 }
@@ -133,12 +141,14 @@ const signout = () => {
         $.post("core/controller/usercontroller.php", body, (response) => {
 
             if (response.quit === true) 
-                messages.show("Cerrando sesion", "warning", 1300, "", () => {
+                message.show("Cerrando sesion", "warning", 1300, "", () => {
                     window.location.reload();
                 });
 
             else 
-                console.log("No se pudo cerrar sesion"); 
+                message.show("Error al cerrar sesion " + fontAwesomeIcon("fa fa-times", "ml-2 mt-1 text-danger"), "error", 1300, "Cierre su navegador para cerrar sesion", () => {
+                    return;
+                })
 
         }, "json")
     })
