@@ -5,14 +5,14 @@ include $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/autoloader.php";
 
 class MobileApplicationController
 {
-    private $mobileApplicationDAO;
+    private MobileApplicationDAO $mobileApplicationDAO;
 
     public function __construct()
     {
         $this->mobileApplicationDAO = new MobileApplicationDAO();
     }
 
-    public function createApplication(MobileApplication $mobileApplication)
+    public function createMobileApplication(MobileApplication $mobileApplication) 
     {
         if ($mobileApplication !== null)
         {
@@ -35,11 +35,16 @@ class MobileApplicationController
         ));
     }
 
+    public function listMobileApplications() : Array
+    {
+        return $this->mobileApplicationDAO->list();
+    }
+
 }
 
 $utils = new Utils();
 
-if ($utils->isValid($_POST['body']))
+if (!$utils->isValid($_POST['body']))
 {
     echo die(json_encode(array ("success" => false, "details" => "Empty fields")) );    
 }
@@ -48,6 +53,7 @@ $auth = new Auth();
 
 $mobileApplicationController = new MobileApplicationController();
 $response = null;
+
 
 
 switch($_POST['body']['action'])
@@ -65,16 +71,22 @@ switch($_POST['body']['action'])
 
             $application = new MobileApplication($id, $creatorId, $name, $description, $category, $price);
 
-            $reponse = $mobileApplicationController->createApplication($application);
+            $response = $mobileApplicationController->createMobileApplication($application);
 
         }
         else 
-        {
-            $reponse = json_encode(array(
-                "saved" => false,
-                "details" => "Debe ser un desarrollador para publicar"
+        {   
+            $response = json_encode(array(
+                "saved" => false, 
+                "details" => "Debe ser un desarrollador para publicar",
             ));
         }
+        
+        break;
+
+    case "list-app":
+        
+        $response = json_encode($mobileApplicationController->listMobileApplications());
         
         break;
 
@@ -82,6 +94,6 @@ switch($_POST['body']['action'])
         break;
 }
 
-echo $response
+echo $response;
 
 ?>

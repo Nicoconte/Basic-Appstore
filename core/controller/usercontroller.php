@@ -118,8 +118,9 @@ switch($_POST['body']['action'])
         $password = $_POST['body']['password'];
         $role = $_POST['body']['role'];
 
-        $response = $userController->signup(new User($id, $username, $password, $role));
-        
+        if (!$auth->isAuthenticated())
+            $response = $userController->signup(new User($id, $username, $password, $role));
+
         break;
 
     case "signin":

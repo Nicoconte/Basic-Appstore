@@ -15,6 +15,9 @@ Se creo el DAO de aplicaciones moviles
 Se llevo los atributos mas frecuentes del DAO a una clase aparte (Padre)
 Se creo el controlador de aplicaciones moviles
 
+- 04/02/2021
+Se listan las aplicaciones en una card de bootstrap 4
+Se crean las aplicaciones y valida quien realiza la accion
 
 **************************************************************************************************
 

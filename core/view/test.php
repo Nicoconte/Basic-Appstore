@@ -16,13 +16,9 @@
             $auth = new Auth();
             
 
-            echo "Authenticated? => " . $auth->isAuthenticated();
+            echo "Authenticated? => " . $auth->isAuthenticated() . " | ";
 
-            echo "<br>";
-
-            echo "Developer? => " . $auth->isDeveloper();
-
-            echo "<br>";
+            echo "Developer? => " . $auth->isDeveloper() . " | ";
 
             echo "Customer? => " . $auth->isCustomer();
 
@@ -39,11 +35,35 @@
         <option value="customer">Customer</option>
     </select>
 
-    <button id="signup-btn" class="btn btn-success mt-4">Sign up</button>
+    <div class="w-100 d-flex flex-row mt-3">
+        <button id="signup-btn" class="btn btn-success">Sign up</button>
+        <button id="signin-btn" class="btn btn-info ml-3">Sign in </button>
+        <button id="signout-btn" class="btn btn-secondary ml-3">Sign out </button>
+    </div>
+    
+    <h5 class="mt-4">Aplicaciones</h5>
 
-    <button id="signin-btn" class="btn btn-info mt-3">Sign in </button>
+    <input type="text" class="form-control" id="mobile-app-name" placeholder="Nombre">
+    
+    <textarea placeholder="Descripcion" id="mobile-app-description" class="form-control mt-2" cols="30" rows="10"></textarea>
+        
+    <input type="number" class="form-control mt-2" name="" id="mobile-app-price" placeholder="Precio">
 
-    <button id="signout-btn" class="btn btn-secondary mt-3">Sign out </button>
+    <select name="" class="form-control mt-2" id="mobile-app-category">
+        <option value="" disabled selected>Elija una categoria</option>
+        <option value="entertainment">Entretenimiento</option>
+        <option value="social-media">Redes sociales</option>
+        <option value="other">Otros</option>
+    </select>
+
+    <div class="w-100 d-flex flex-row mt-3">
+
+        <button class="btn btn-sm btn-success" id="create-app-btn">Crear app</button>
+        <button class="btn btn-sm btn-danger ml-3">Eliminar app</button>
+        <button class="btn btn-sm btn-info ml-3">Actualizar app</button>
+    </div>
+
+    <div class="mt-5" id="app"></div>
 
 </div>
 
