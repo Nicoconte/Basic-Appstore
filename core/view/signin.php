@@ -1,8 +1,30 @@
+<?php
+
+include $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/autoloader.php";
+
+$auth = new Auth();
+
+if ($auth->isAuthenticated() && $auth->isDeveloper())
+{
+    header("Location: index.php?page=developer-dashboard"); 
+}
+else if ($auth->isAuthenticated() && $auth->isDeveloper())
+{
+    header("Location: index.php?page=customer-dashboard");
+}
+
+?>
+
 <div class="page-container">
 
     <div class="signin-container">
 
-        <div class="signin-image"></div>
+        <div class="signin-image">
+            <a href="index.php?page=home">
+                <img src="assets/img/logo.png" alt="">
+                <h2>Appstore</h2>
+            </a>            
+        </div>
 
         <div class="signin-form">
 

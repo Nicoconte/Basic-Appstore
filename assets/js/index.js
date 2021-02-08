@@ -14,20 +14,28 @@ const fontAwesomeIcon = (icon, options = "") => {
 /**
  * 
  * @param {Object} object 
- * @description Bootstrap card template to show avaibable app
+ * @description Card template to show avaibable app
  */
 const cardTemplate = (object) => {
     return `
-    <div class="card" style="width: 18rem;" app=${object.id} creator=${object.creator}>
-            <img class="card-img-top" src="assets/img/not-image.png" alt="Card image cap">
-            <div class="card-body">
-            <h5 class="card-title">${object.name}</h5>
-            <p class="card-text">${object.description} | ${object.price !== 0 ? "$"+object.price : 'Gratis'}</p>
-            <span>
-                <a href="#" class="btn btn-primary">Ver mas</a><p>${object.price !== 0 ? "$"+object.price : 'Gratis'}</p>
-            </span>
+    <div class="app-card">
+        <div class="app-card-body">
+            <div class="app-card-image">
+                <img src="assets/img/not-image.png">
+            </div>
+            <div class="app-card-title">
+                <h3> ${object.name} </h3>
+            </div>
+            <div class="app-card-options">
+                <div class="app-card-see-more">
+                    <a href="" class="btn btn-info btn-sm"> Ver mas </a>
+                </div>
+                <div class="app-card-price">
+                    ${object.price === 0 ? "Gratis" : "$"+object.price }
+                </div>
+            </div>
         </div>
-    </div>    
+    </div>  
     `    
 }
 
@@ -55,7 +63,10 @@ const tableTemplate = (object) => {
 }
 
 const noResultsTemplate = () => {
-    return `<h1>No hay resultados ${fontAwesomeIcon('fa fa-warning')} </h1>`
+    return `<span class="w-100 mt-5 d-flex justify-content-center">
+                <p> No hay resultados </p>
+                ${fontAwesomeIcon('fa fa-warning', 'ml-2 mt-1')} 
+            </span>`
 };
 
 /**
@@ -92,6 +103,7 @@ const message = {
 
 
 const signup = () => {
+
     $("#signup-btn").click(function(e) {
 
         e.preventDefault();
@@ -138,6 +150,7 @@ const signup = () => {
 
 
 const signin = () => {
+
     $("#signin-btn").click(function(e) {
         e.preventDefault();
 
@@ -249,58 +262,6 @@ const createApplication = () => {
 }
 
 
-const listApplications = () => {
-    let body = 
-    {
-        "body" : {
-            "action" : "list-app"
-        }
-    }   
-
-    let template = ""
-
-    $.post("core/controller/mobileapplicationcontroller.php", body, (response) => {
-        
-        if (response.length <= 0) {
-            template = noResultsTemplate();
-        
-        } else {
-            response.forEach(res => {
-                template += cardTemplate(res);
-            })
-        }
-
-        //$("#app").html(template);
-
-    }, "json")
-}
-
-
-const listDeveloperApplications = () => {
-    let body = 
-    {
-        "body" : {
-            "action" : "list-developer-app"
-        }
-    }
-
-    let template = "";
-
-    $.post("core/controller/mobileapplicationcontroller.php", body, (response) => {
-        if (response.length === 0) {
-            template = noResultsTemplate();
-        } else {
-            response.forEach(res => {
-                template += tableTemplate(res)
-            })
-        }
-
-        $("#app").html(template)
-    
-    }, "json")
-
-}
-
 const deleteApplication = () => {
     $(document).on("click", ".delete-mobile-app-btn", function() {
         
@@ -321,7 +282,6 @@ const deleteApplication = () => {
         
             if (response.deleted)
                 message.show("Aplicacion eliminada", "success", 2500, "", () => {
-                    console.log("Hola")
                     listDeveloperApplications()
                 })       
 
@@ -336,13 +296,34 @@ const deleteApplication = () => {
     });
 }
 
+const checkPasswordLength = () => {
+    let password;
+    let length;
+
+    $("#user-password").keyup((e) => {
+
+        e.preventDefault();
+
+        password = $("#user-password").val();
+        length = password.length;    
+
+        if (length > 8) {
+            $("#signup-btn").removeAttr("disabled")
+        } else {
+            $("#signup-btn").attr("disabled", true)
+        }
+    })
+}
 
 $(document).ready(() => {
+
+    //NOTE: Common function for everyone
+    checkPasswordLength();
     signup();
     signin();
     signout();
 
+    //TODO: Try to make it avaibable only if the user is a developer
     createApplication();
-    //listApplications();
     deleteApplication();
 })

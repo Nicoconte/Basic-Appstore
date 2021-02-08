@@ -4,7 +4,7 @@
 
         <h1>
             Error 404 | 
-            <a href="index.php?page=signin" class="btn" style="background-color:transparent;">Volver</a> 
+            <a href="index.php?page=home" class="btn" style="background-color:transparent;">Volver</a> 
         </h1>
 
     </div>

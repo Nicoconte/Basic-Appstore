@@ -29,11 +29,7 @@
 
     <input type="password" class="mt-3 form-control" id="user-password" placeholder="Contraseña">
 
-    <select class="mt-3 form-control" name="" id="user-role">
-        <option value="Seleccione un rol" disabled selected >Seleccione un rol</option>
-        <option value="developer">Developer</option>
-        <option value="customer">Customer</option>
-    </select>
+    <input class="mt-3" type="checkbox" name="" id="user-role">
 
     <div class="w-100 d-flex flex-row mt-3">
         <button id="signup-btn" class="btn btn-success">Sign up</button>

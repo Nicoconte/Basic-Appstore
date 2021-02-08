@@ -37,6 +37,20 @@ body {
     background-size: cover;
 }
 
+.signin-image a{
+    display: flex;
+    flex-direction: row;
+    width: 10%;
+    height:30%;
+    margin-left:20px;
+    margin-top: 10px;
+}
+
+.signin-image img {
+    width:100%;
+    height:20%;
+}
+
 .signin-form {
     width:60%;
     height:100%;
@@ -136,6 +150,20 @@ body {
     background-size: cover;
 }
 
+.signup-image a{
+    display: flex;
+    flex-direction: row;
+    width: 10%;
+    height:30%;
+    margin-left:20px;
+    margin-top: 10px;
+}
+
+.signup-image img {
+    width:100%;
+    height:20%;
+}
+
 .signup-form {
     width:60%;
     height:100%;
@@ -214,6 +242,87 @@ body {
     height:10%;
 }
 
+/*
+* Home page
+*/
+.home-content {
+    width:100%;
+    height:90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+.home-apps-preview {
+    width:80%;
+    height:100%;
+    overflow: scroll;
+}
+
+.home-apps-preview::-webkit-scrollbar {
+    display: none;
+  }
+
+/*
+* Home navbar template
+*/
+.navbar-container {
+    width:100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+.navbar-logo {
+    width:25%;
+    height:100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.navbar-logo a {
+    width:50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-left:20px;
+}
+
+.navbar-logo img {
+    width: 50%;
+    height: 60%;
+    margin-bottom: 5px;
+}
+
+
+.navbar-buttons {
+    width:25%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.navbar-search-bar {
+    width:50%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-search-bar input {
+    width:80%;
+    height:60%;
+}
+
+/*
+* Card style
+*/
 .card {
     width:32%;
     height:50%;
@@ -221,4 +330,68 @@ body {
     float:left;
     margin-left:10px;
     margin-top: 30px;
+}
+
+.app-card {
+    width: 25%;
+    height: 60%;
+    position: relative;
+    float:left;
+    margin-left:30px;
+    margin-top: 20px;
+    border:1px solid black;
+}
+
+.app-card-body {
+    width: 100%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.app-card-image {
+    width:100%;
+    height: 70%;
+
+}
+
+.app-card-image img {
+    width: 100%;
+    height: 100%;
+}
+
+.app-card-title {
+    width:100%;
+    height: 15%;
+}
+
+.app-card-title h3 {
+    margin-top:5px;
+    margin-left: 10px;
+}
+
+.app-card-options {
+    width: 100%;
+    height:20%;
+    display: flex;
+    flex-direction: row;
+}
+
+.app-card-see-more {
+    width: 30%;
+    height:100%;
+    text-align: center;
+}
+
+.app-card-see-more a {
+    margin-top:20px;
+    margin-left: 10px;
+}
+
+.app-card-price {
+    width:70%;
+    height: 100%;
+    text-align: center;
+    margin-top:25px;
 }
