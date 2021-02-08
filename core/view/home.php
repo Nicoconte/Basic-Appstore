@@ -19,7 +19,7 @@ const listApplications = () => {
         }
     }   
 
-    let template = ""
+    let template = "";
 
     $.post("core/controller/mobileapplicationcontroller.php", body, (response) => {
         
@@ -27,6 +27,7 @@ const listApplications = () => {
             template = noResultsTemplate();
         
         } else {
+
             response.forEach(res => {
                 template += cardTemplate(res);
             })

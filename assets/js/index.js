@@ -47,10 +47,10 @@ const cardTemplate = (object) => {
 const tableTemplate = (object) => {
     return `
         <tr app=${object.id} creator=${object.creator}>
-            <td>${object.name}<td>
-            <td>${object.description.length > 20 ? object.description.substring(0, 20)+".." : object.description}<td>
-            <td>${object.price}</td>
-            <td>
+            <td class="text-center">${object.name}<td>
+            <td class="text-center">${object.description.length > 20 ? object.description.substring(0, 20)+".." : object.description}<td>
+            <td class="text-center">${object.price}</td>
+            <td class="text-center">
                 <button class="delete-mobile-app-btn btn btn-sm btn-danger">
                     ${fontAwesomeIcon('fa fa-trash')}
                 </button>
@@ -247,6 +247,7 @@ const createApplication = () => {
             if (response.saved) 
                 message.show("Guardado!", "success", 2500, "La aplicacion se creo con exito", () => {
                     clearInput(["#mobile-app-name", "#mobile-app-price", "#mobile-app-description", "#mobile-app-category"])
+                    listDeveloperApplications();
                 })
             
             else if ('details' in response)
