@@ -1,16 +1,10 @@
 <?php
 session_start();
 
-$view = "";
+include $_SERVER['DOCUMENT_ROOT'] . "/appstore/core/autoloader.php";
 
-if (isset($_GET['page']))
-{
-    $view = $_GET['page'];
-} 
-else 
-{
-    $view = "test";
-}
+$viewController = new ViewController($_GET['page']);
+
 
 ?>
 
@@ -18,7 +12,7 @@ else
 <body>
 
     <section id="page">
-        <?php include("core/view/" . $view . ".php"); ?>
+        <?php $viewController->getPage() ?>
     </section>
 
 <script src="assets/js/index.js"></script>

@@ -19,8 +19,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/index.css">
 
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="assets/img/favicon.png"/>
 
     <title>Appstore for fun</title>
 

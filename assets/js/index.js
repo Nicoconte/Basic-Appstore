@@ -1,3 +1,6 @@
+const signinURL = "index.php?page=signin";
+const signupURL = "index.php?page=signup"
+
 /**
  * 
  * @param {String} icon 
@@ -30,6 +33,33 @@ const cardTemplate = (object) => {
 
 /**
  * 
+ * @param {Object} object
+ * @description Table tr and td template to show developer´s app 
+ */
+const tableTemplate = (object) => {
+    return `
+        <tr app=${object.id} creator=${object.creator}>
+            <td>${object.name}<td>
+            <td>${object.description.length > 20 ? object.description.substring(0, 20)+".." : object.description}<td>
+            <td>${object.price}</td>
+            <td>
+                <button class="delete-mobile-app-btn btn btn-sm btn-danger">
+                    ${fontAwesomeIcon('fa fa-trash')}
+                </button>
+                <button class="update-mobile-app-btn btn btn-sm btn-info">
+                    ${fontAwesomeIcon('fa fa-pencil')}
+                </button>
+            </td>
+        </tr>
+    `
+}
+
+const noResultsTemplate = () => {
+    return `<h1>No hay resultados ${fontAwesomeIcon('fa fa-warning')} </h1>`
+};
+
+/**
+ * 
  * @param {Array} inputs 
  */
 const clearInput = (inputs) => {
@@ -52,8 +82,7 @@ const message = {
             icon : icon,
             title : message,
             text : text,
-            timer : time,
-            position : "top-start"
+            timer : time
         }).then(() => {
             if (callback !== null)
                 return callback();
@@ -61,21 +90,21 @@ const message = {
     }
 }
 
-const signup = () => {
 
+const signup = () => {
     $("#signup-btn").click(function(e) {
 
         e.preventDefault();
 
-        if (areInputEmpty(["#username", "#user-password", "#user-role"])) {
-            message.show("Debe completar los campos", "warning", 2500, "");
+        if (areInputEmpty(["#username", "#user-password"])) {
+            message.show("Debe completar los campos", "warning", 2500);
 
             return;
         } 
 
         let username = $("#username").val();
         let password = $("#user-password").val();
-        let role     = $("#user-role").val();
+        let role     = $("#user-role").is(":checked") ? "developer" : "customer";
 
         let body = 
         {
@@ -90,8 +119,8 @@ const signup = () => {
         $.post("core/controller/usercontroller.php", body, (response) => {
 
             if (response.saved) {
-                message.show("El registro fue exitoso!", "success", 2500, () => {
-                    //Redirect to dashboard
+                message.show("El registro fue exitoso!", "success", 2500, "", () => {
+                    window.location.href = signinURL;
                 })
 
             } else {
@@ -134,7 +163,7 @@ const signin = () => {
 
             if (response.auth)
                 message.show(response.details, "success", 2500, "", () => {
-                    window.location.reload();
+                    window.location.href = response.url
                 });
 
             else
@@ -162,7 +191,7 @@ const signout = () => {
 
             if (response.quit === true) 
                 message.show("Cerrando sesion", "warning", 2500, "", () => {
-                    window.location.reload();
+                    window.location.href = "index.php?page=signin"
                 });
 
             else 
@@ -203,9 +232,13 @@ const createApplication = () => {
         $.post("core/controller/mobileapplicationcontroller.php", body, (response) => {
 
             if (response.saved) 
-                message.show("Guardado!", "success", 2500, "La aplicacion se creo con exito")
+                message.show("Guardado!", "success", 2500, "La aplicacion se creo con exito", () => {
+                    clearInput(["#mobile-app-name", "#mobile-app-price", "#mobile-app-description", "#mobile-app-category"])
+                })
+            
             else if ('details' in response)
                 message.show(response.details, "error", 2500, "Si lo es, inicie sesion");
+            
             else
                 message.show("Fallo!", "error", 2500, "No se pudo crear la aplicacion revise los datos");
         
@@ -227,17 +260,80 @@ const listApplications = () => {
     let template = ""
 
     $.post("core/controller/mobileapplicationcontroller.php", body, (response) => {
-        if (response.length === 0) {
-            console.log("No hay resultados");
+        
+        if (response.length <= 0) {
+            template = noResultsTemplate();
+        
         } else {
             response.forEach(res => {
                 template += cardTemplate(res);
             })
-
-            $("#app").html(template);
-
         }
+
+        //$("#app").html(template);
+
     }, "json")
+}
+
+
+const listDeveloperApplications = () => {
+    let body = 
+    {
+        "body" : {
+            "action" : "list-developer-app"
+        }
+    }
+
+    let template = "";
+
+    $.post("core/controller/mobileapplicationcontroller.php", body, (response) => {
+        if (response.length === 0) {
+            template = noResultsTemplate();
+        } else {
+            response.forEach(res => {
+                template += tableTemplate(res)
+            })
+        }
+
+        $("#app").html(template)
+    
+    }, "json")
+
+}
+
+const deleteApplication = () => {
+    $(document).on("click", ".delete-mobile-app-btn", function() {
+        
+        let htmlParent = $(this)[0].parentElement.parentElement;
+        let id = $(htmlParent).attr("app");
+        
+        console.log(id);
+
+        let body = 
+        {
+            "body" : {
+                "id" : id,
+                "action" : "delete-app"
+            }    
+        }
+        
+        $.post("core/controller/mobileapplicationcontroller.php", body, (response) => {
+        
+            if (response.deleted)
+                message.show("Aplicacion eliminada", "success", 2500, "", () => {
+                    console.log("Hola")
+                    listDeveloperApplications()
+                })       
+
+            else if ('details' in response)
+                message.show(response.details, "error", 2500);
+
+            else
+                message.show("No se pudo eliminar", "error", 2500, "Algo ocurrio durante la eliminacion");
+        
+        }, "json");
+
+    });
 }
 
 
@@ -247,5 +343,6 @@ $(document).ready(() => {
     signout();
 
     createApplication();
-    listApplications();
+    //listApplications();
+    deleteApplication();
 })

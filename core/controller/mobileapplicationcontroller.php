@@ -36,8 +36,66 @@ class MobileApplicationController
     }
 
     public function listMobileApplications() : Array
-    {
+    {   
         return $this->mobileApplicationDAO->list();
+    }
+
+    public function getMobileApplication(String $id) : Array 
+    {   
+        if ($id !== null)
+            return $this->mobileApplicationDAO->findById($id);
+        
+        return null;
+    }
+
+    public function listDeveloperMobileApplications(String $creatorId) : Array
+    {   
+        if ($creatorId !== null)
+            return $this->mobileApplicationDAO->findByDeveloper($creatorId);
+
+        return null;
+    }
+
+    public function deleteMobileApplication(String $id, String $creatorId)
+    {
+        if ($id !== null && $creatorId !== null) 
+        {
+            if ($this->mobileApplicationDAO->delete($id, $creatorId))
+            {
+                return json_encode(array(
+                    "deleted" => true
+                ));
+            }
+
+            return json_encode(array(
+                "deleted" => false
+            ));            
+        }
+
+        return json_encode(array(
+            "deleted" => false
+        ));
+    }
+
+    public function updateMobileApplication(MobileApplication $mobileApplication)
+    {
+        if ($mobileApplication !== null)
+        {
+            if ($this->mobileApplicationDAO->update($mobileApplication))
+            {
+                return json_encode(array(
+                    "updated" => true
+                ));
+            }
+
+            return json_encode(array(
+                "updated" => false
+            ));            
+        }
+
+        return json_encode(array(
+            "updated" => false
+        ));
     }
 
 }
@@ -90,6 +148,60 @@ switch($_POST['body']['action'])
         
         break;
 
+    case "single-app":
+        
+        $id = $_POST['body']['id'];
+        $response = json_encode($mobileApplicationController->getMobileApplication($id));
+
+        break;
+
+    case "list-developer-app":
+
+        $creatorId = $_SESSION['USER']['ID'];  
+        $response = json_encode($mobileApplicationController->listDeveloperMobileApplications($creatorId));
+
+        break;
+
+    case "delete-app":
+
+        if ($auth->isAuthenticated() && $auth->isDeveloper())
+        {
+            $id = $_POST['body']['id'];
+            $creatorId = $_SESSION['USER']['ID'];
+            $response = $mobileApplicationController->deleteMobileApplication($id, $creatorId);
+        }
+        else 
+        {
+            $response = json_encode(array(
+                "deleted" => false, 
+                "details" => "Debe ser un desarrollador para eliminar",
+                "auth" => $auth->isDeveloper()
+            ));            
+        }
+
+        break;
+
+    case "update-app":
+
+        if ($auth->isAuthenticated() && $auth->isDeveloper())
+        {
+            $id = $_POST['body']['id'];
+            $description = $_POST['body']['description'];
+            $price = $_POST['body']['price'];
+            $mobileApplication = new MobileApplication($id, "", "", $description, "", $price);
+
+            $response = $mobileApplicationController->updateMobileApplication($mobileApplication);
+        }
+        else 
+        {
+            $response = json_encode(array(
+                "deleted" => false, 
+                "details" => "Debe ser un desarrollador para actualizar",
+            ));            
+        }
+
+        break;        
+    
     default:
         break;
 }

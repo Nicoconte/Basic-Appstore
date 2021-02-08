@@ -22,6 +22,7 @@ class UserController
 
             if ($this->userDAO->save($user))
             {
+
                 return json_encode(array(
                     "saved" => true
                 ));
@@ -58,7 +59,8 @@ class UserController
 
                 return json_encode(array(
                     "auth" => true,
-                    "details" => "Bienvenido" 
+                    "details" => "Bienvenido " . $user->getUsername(),
+                    "url" => $user->getRole() === "developer" ? "index.php?page=developer-dashboard" : "index.php?page=customer-dashboard"
                 ));
             } 
             else 

@@ -19,14 +19,18 @@ Se creo el controlador de aplicaciones moviles
 Se listan las aplicaciones en una card de bootstrap 4
 Se crean las aplicaciones y valida quien realiza la accion
 
+- 07/02/2021
+Se creo un controlador para las vistas, dentro de este hay un metodo que gestiona las mismas 
+y te redirecciona a un 404 si no existen
+Las vistas del inicio de sesion y registro estan listas
+Los dashboard fueron creados de forma super basica pero tienen autenticacion por roles
+El metodo "signin" en el controlador retorna la url correspondiente por rol
+
 **************************************************************************************************
 
 Cosas por hacer:
-    - Diseñar dashboard
-    - Diseñar sign in y sign up
     - Colocar animaciones en las paginas anteriores
-    - Probar las implementaciones del 03/02/2021
-    - Terminar el crud de aplicaciones moviles
     - Comenzar a modelar la tienda 
+    - Crear una version basica del "home"
 
 **************************************************************************************************
